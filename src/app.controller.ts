@@ -1,5 +1,6 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CreateCatDto } from './create-cat.dto';
 
 @Controller()
 export class AppController {
@@ -10,8 +11,13 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get('cats')
-  getCats(@Req() req: Request): string {
-    return `Beautiful pretty kittens. <pre style="max-width: 400px; text-wrap: wrap"> ${JSON.stringify(req.headers)}</pre>`;
+  @Get('cats/:name')
+  getCats(@Param('name') name: string): string {
+    return `Beautiful pretty kittens. You have selected name ${name}`;
+  }
+
+  @Post()
+  addCat(@Body() createCatDto: CreateCatDto) {
+    return `You've just added a kitten to out collection! Name: ${createCatDto.name} Age: ${createCatDto.age}`;
   }
 }
