@@ -1,23 +1,23 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
-import { AppService } from './app.service';
+import { CatsService } from './app.service';
 import { CreateCatDto } from './create-cat.dto';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly catsService: CatsService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
+  getCats(): string {
+    return `Look at all these cats: ${this.catsService
+      .findAll()
+      .map((cat) => cat.name)
 
-  @Get('cats/:name')
-  getCats(@Param('name') name: string): string {
-    return `Beautiful pretty kittens. You have selected name ${name}`;
+      .join(', ')}`;
   }
 
   @Post()
   addCat(@Body() createCatDto: CreateCatDto) {
+    this.catsService.create(createCatDto);
     return `You've just added a kitten to out collection! Name: ${createCatDto.name} Age: ${createCatDto.age}`;
   }
 }

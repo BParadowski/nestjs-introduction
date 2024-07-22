@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { CatsService } from './app.service';
 
 describe('AppController', () => {
   let appController: AppController;
@@ -8,15 +8,19 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [CatsService],
     }).compile();
 
     appController = app.get<AppController>(AppController);
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return new cat creation message', () => {
+      expect(
+        appController.addCat({ name: 'hankua', age: 4, breed: 'BdoncaDonc' }),
+      ).toBe(
+        "You've just added a kitten to out collection! Name: hankua Age: 4",
+      );
     });
   });
 });
